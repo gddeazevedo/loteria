@@ -17,6 +17,7 @@ return new class extends Migration
             $table->json('numbers')->nullable(false);
             $table->json('machine_numbers')->nullable(false);
             $table->primary('code');
+            $table->timestamps();
         });
     }
 
