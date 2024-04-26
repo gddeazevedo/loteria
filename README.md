@@ -8,6 +8,10 @@
 
   - This command is used to start up the containers specified in the docker-compose.yml file
 
+- ## docker compose exec app composer install
+
+  - This command will install all required dependencies from composer.json file
+
 - ## docker compose exec app php artisan migrate
 
   - This command is used to run the initial migrations of the application
