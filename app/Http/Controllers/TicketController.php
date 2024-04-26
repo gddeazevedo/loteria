@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Ticket;
+use App\Jobs\PrizeDrawJob;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -16,20 +18,25 @@ class TicketController extends Controller
         ];
 
         $validated = $request->validate($rules);
-        $ticket_code = '';
+        $ticket_code = uniqid();
         $ticket = Ticket::create([
             'code' => $ticket_code,
             ...$validated
         ]);
 
-        // PrizeDrawJob::dispatch($ticket);
+        PrizeDrawJob::dispatch($ticket);
 
         return response()->json(['ticketCode' => $ticket_code], 201);
     }
 
     public function show(string $code): JsonResponse
     {
-        $ticket = Ticket::find($code);
+        try {
+            $ticket = Ticket::findOrFail($code);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['message' => "ticket with code $code was not found"], 404);
+        }
+
         $machine_numbers = json_decode($ticket->machine_numbers, true);
 
         $res = [
