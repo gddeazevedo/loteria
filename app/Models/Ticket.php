@@ -15,13 +15,13 @@ class Ticket extends Model
     public $incrementing = false;
     protected $fillable = ['code', 'name', 'numbers', 'machine_numbers'];
 
-    // protected function numbers(): Attribute
-    // {
-    //     return Attribute::make(
-    //         get: fn (string $val) => json_decode($val, true),
-    //         set: fn(array $val) => json_encode($val)
-    //     );
-    // }
+    protected function numbers(): Attribute
+    {
+        return Attribute::make(
+            get: fn (string $val) => json_decode($val, true),
+            set: fn(array $val) => json_encode($val)
+        );
+    }
 
     // protected function machine_numbers(): Attribute
     // {
