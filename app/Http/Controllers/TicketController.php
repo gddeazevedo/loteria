@@ -31,7 +31,7 @@ class TicketController extends Controller
         return response()->json(['ticketCode' => $ticket_code], Response::HTTP_CREATED);
     }
 
-    public function show(string $code)
+    public function show(string $code): JsonResponse
     {
         try {
             $ticket = Ticket::findOrFail($code);
