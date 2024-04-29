@@ -13,8 +13,8 @@ class TicketController extends Controller
     public function store(Request $request): JsonResponse
     {
         $rules = [
-            'name' => ['required', 'max:50'],
-            'numbers' => ['required', 'array', 'min:6', 'max:6']
+            'name' => 'required|min:2|max:50',
+            'numbers' => 'required|array|min:6|max:6'
         ];
 
         $validated = $request->validate($rules);
