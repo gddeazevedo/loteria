@@ -15,3 +15,7 @@
 - ## docker compose exec app php artisan migrate
 
   - This command is used to run the initial migrations of the application
+
+- ## docker compose exec app php artisan queue:work
+
+  - This command is used to start the worker deamon
