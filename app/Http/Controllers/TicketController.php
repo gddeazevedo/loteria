@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\TicketResource;
 use App\Models\Ticket;
 use App\Jobs\PrizeDrawJob;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class TicketController extends Controller
 {
@@ -26,10 +28,10 @@ class TicketController extends Controller
 
         PrizeDrawJob::dispatch($ticket);
 
-        return response()->json(['ticketCode' => $ticket_code], 201);
+        return response()->json(['ticketCode' => $ticket_code], Response::HTTP_CREATED);
     }
 
-    public function show(string $code): JsonResponse
+    public function show(string $code)
     {
         try {
             $ticket = Ticket::findOrFail($code);
@@ -37,22 +39,6 @@ class TicketController extends Controller
             return response()->json(['message' => "ticket with code $code was not found"], 404);
         }
 
-        $machine_numbers = json_decode($ticket->machine_numbers, true);
-
-        $res = [
-            'name'=> $ticket->name,
-            'yourNumbers' => $ticket->numbers,
-            'machineNumbers' => $machine_numbers,
-            'winner' => $ticket->numbers === $machine_numbers,
-        ];
-
-        if ($machine_numbers === null) {
-            $res['message'] = 'not yet';
-            return response()->json($res);
-        }
-
-        $res['message'] = $res['winner'] ? 'you win' : 'you lost';
-
-        return response()->json($res);
+        return response()->json(new TicketResource($ticket));
     }
 }
