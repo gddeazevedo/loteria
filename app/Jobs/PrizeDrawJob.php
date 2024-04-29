@@ -26,9 +26,8 @@ class PrizeDrawJob implements ShouldQueue
      */
     public function handle(): void
     {
-        $time = rand(1, 30);
-        sleep($time);
-        $machine_numbers = array_map(fn() => rand(1, 60), array_fill(0, 6, null));
+        sleep( rand(1, 30) );
+        $machine_numbers = array_map( fn() => rand(1, 60), array_fill(0, 6, null) );
         $this->ticket->machine_numbers = json_encode($machine_numbers);
         $this->ticket->save();
     }
