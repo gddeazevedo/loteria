@@ -170,4 +170,14 @@ class TicketControllerTest extends TestCase
                         ->etc()
                 );
     }
+
+    public function test_show_ticket_model_not_found_exception(): void
+    {
+        $ticket_code = uniqid();
+        $response = $this->getJson("/api/ticket/$ticket_code");
+        $response->assertStatus(Response::HTTP_NOT_FOUND)
+            ->assertExactJson([
+                'message' => "ticket with code $ticket_code was not found"
+            ]);
+    }
 }
