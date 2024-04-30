@@ -36,7 +36,8 @@ class TicketController extends Controller
         try {
             $ticket = Ticket::findOrFail($code);
         } catch (ModelNotFoundException $e) {
-            return response()->json(['message' => "ticket with code $code was not found"], 404);
+            return response()->json(
+                ['message' => "ticket with code $code was not found"], Response::HTTP_NOT_FOUND);
         }
 
         return response()->json(new TicketResource($ticket));
