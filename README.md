@@ -1,5 +1,7 @@
 # Steps to run the project
 
+- ## Copy the .env.example file into the .env file, set the values of the environment variables
+
 - ## docker compose build app
 
   - This command is used to build the image specified by the Dockerfile
