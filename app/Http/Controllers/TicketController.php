@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\TicketRequest;
 use App\Http\Resources\TicketResource;
 use App\Models\Ticket;
 use App\Jobs\PrizeDrawJob;
@@ -12,14 +13,9 @@ use Symfony\Component\HttpFoundation\Response;
 
 class TicketController extends Controller
 {
-    public function store(Request $request): JsonResponse
+    public function store(TicketRequest $request): JsonResponse
     {
-        $rules = [
-            'name' => 'required|min:2|max:50',
-            'numbers' => 'required|array|min:6|max:6'
-        ];
-
-        $validated = $request->validate($rules);
+        $validated = $request->validated();
         $ticket_code = uniqid();
         $ticket = Ticket::create([
             'code' => $ticket_code,
